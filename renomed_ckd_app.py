@@ -124,9 +124,9 @@ with st.form("prediction_form"):
 # --- Results & Visualizations ---
 if prediction is not None:
     st.write("---")
-    st.subheader("📊 Prediction Result")
+    st.subheader(" Prediction Result")
     if prediction == 1:
-        st.success(f"✅ The model predicts: **Chronic Kidney Disease (CKD)**")
+        st.success(f" The model predicts: **Chronic Kidney Disease (CKD)**")
         st.info(f"Probability of CKD: {probability:.2f}")
     else:
         st.success(f"🟢 The model predicts: **No Chronic Kidney Disease**")
@@ -134,7 +134,7 @@ if prediction is not None:
 
     # --- Feature Importance ---
     if selected_model_name == 'Random Forest Classifier' and rf_model is not None:
-        st.subheader("📈 Feature Importance")
+        st.subheader(" Feature Importance")
         try:
             importances = rf_model.feature_importances_
             features = ['sg', 'al', 'pc', 'bu', 'sc', 'hemo', 'pcv', 'rc', 'htn', 'dm']
@@ -149,7 +149,7 @@ if prediction is not None:
             st.warning("Feature importance not available for this model.")
 
     # --- Probability Bar ---
-    st.subheader("📊 Probability Distribution")
+    st.subheader(" Probability Distribution")
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.bar(['Not CKD', 'CKD'], [1 - probability, probability], color=['#34A853', '#EA4335'])
     ax.set_ylim(0, 1)
@@ -158,13 +158,13 @@ if prediction is not None:
     st.pyplot(fig)
 
     # --- Patient Input Summary ---
-    st.subheader("🧾 Patient Input Summary")
+    st.subheader(" Patient Input Summary")
     st.table(pd.DataFrame([input_data]))
 
     # --- Download Report (CSV) ---
     csv_data = pd.DataFrame([input_data]).assign(Prediction=prediction, Probability=probability).to_csv(index=False)
     st.download_button(
-        label="📥 Download Report (CSV)",
+        label="Download Report (CSV)",
         data=csv_data,
         file_name="RenoMed_CKD_Report.csv",
         mime="text/csv"
@@ -183,7 +183,7 @@ if prediction is not None:
     pdf_output = pdf.output(dest="S").encode("latin-1")
 
     st.download_button(
-        label="📥 Download Report (PDF)",
+        label="Download Report (PDF)",
         data=pdf_output,
         file_name="RenoMed_CKD_Report.pdf",
         mime="application/pdf"
