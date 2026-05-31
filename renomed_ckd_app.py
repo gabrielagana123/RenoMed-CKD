@@ -183,7 +183,10 @@ if prediction is not None:
 
     # fpdf2 returns a string, so encode to bytes
     pdf_output = pdf.output(dest="S").encode("latin-1")
-
+    if isinstance(pdf_str, str):
+        pdf_output = pdf_str.encode("latin-1")
+    else:
+        pdf_output = pdf_str  # already bytes
     st.download_button(
         label="Download Report (PDF)",
         data=pdf_output,
