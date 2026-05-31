@@ -170,24 +170,26 @@ if prediction is not None:
         mime="text/csv"
     )
 
-    # --- Download Report (PDF) ---
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(200, 10, txt="RenoMed CKD Prediction Report", ln=True, align="C")
-    pdf.ln(10)
-    for key, value in input_data.items():
-        pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
-    pdf.cell(200, 10, txt=f"Prediction: {'CKD' if prediction == 1 else 'Not CKD'}", ln=True)
-    pdf.cell(200, 10, txt=f"Probability: {probability:.2f}", ln=True)
-    pdf_output = pdf.output(dest="S").encode("latin-1")
+# --- Download Report (PDF) ---
+pdf = FPDF()
+pdf.add_page()
+pdf.set_font("Arial", size=12)
+pdf.cell(200, 10, txt="RenoMed CKD Prediction Report", ln=True, align="C")
+pdf.ln(10)
+for key, value in input_data.items():
+    pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
+pdf.cell(200, 10, txt=f"Prediction: {'CKD' if prediction == 1 else 'Not CKD'}", ln=True)
+pdf.cell(200, 10, txt=f"Probability: {probability:.2f}", ln=True)
 
-    st.download_button(
-        label=" Download Report (PDF)",
-        data=pdf_output,
-        file_name="RenoMed_CKD_Report.pdf",
-        mime="application/pdf"
-    )
+# fpdf2 returns bytes directly, so no need to encode again
+pdf_output = pdf.output(dest="S").encode("latin-1")
+
+st.download_button(
+    label="📥 Download Report (PDF)",
+    data=pdf_output,
+    file_name="RenoMed_CKD_Report.pdf",
+    mime="application/pdf"
+)
 
 # --- Footer ---
 st.markdown("""
