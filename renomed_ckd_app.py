@@ -124,17 +124,17 @@ with st.form("prediction_form"):
 # --- Results & Visualizations ---
 if prediction is not None:
     st.write("---")
-    st.subheader(" Prediction Result")
+    st.subheader("Prediction Result")
     if prediction == 1:
-        st.success(f" The model predicts: **Chronic Kidney Disease (CKD)**")
+        st.success(f"The model predicts: **Chronic Kidney Disease (CKD)**")
         st.info(f"Probability of CKD: {probability:.2f}")
     else:
-        st.success(f"🟢 The model predicts: **No Chronic Kidney Disease**")
+        st.success(f"The model predicts: **No Chronic Kidney Disease**")
         st.info(f"Probability of Not CKD: {1 - probability:.2f}")
 
     # --- Feature Importance ---
     if selected_model_name == 'Random Forest Classifier' and rf_model is not None:
-        st.subheader(" Feature Importance")
+        st.subheader("Feature Importance")
         try:
             importances = rf_model.feature_importances_
             features = ['sg', 'al', 'pc', 'bu', 'sc', 'hemo', 'pcv', 'rc', 'htn', 'dm']
@@ -149,7 +149,7 @@ if prediction is not None:
             st.warning("Feature importance not available for this model.")
 
     # --- Probability Bar ---
-    st.subheader(" Probability Distribution")
+    st.subheader("Probability Distribution")
     fig, ax = plt.subplots(figsize=(6, 4))
     ax.bar(['Not CKD', 'CKD'], [1 - probability, probability], color=['#34A853', '#EA4335'])
     ax.set_ylim(0, 1)
@@ -158,7 +158,7 @@ if prediction is not None:
     st.pyplot(fig)
 
     # --- Patient Input Summary ---
-    st.subheader(" Patient Input Summary")
+    st.subheader("Patient Input Summary")
     st.table(pd.DataFrame([input_data]))
 
     # --- Download Report (CSV) ---
@@ -180,6 +180,8 @@ if prediction is not None:
         pdf.cell(200, 10, txt=f"{key}: {value}", ln=True)
     pdf.cell(200, 10, txt=f"Prediction: {'CKD' if prediction == 1 else 'Not CKD'}", ln=True)
     pdf.cell(200, 10, txt=f"Probability: {probability:.2f}", ln=True)
+
+    # fpdf2 returns a string, so encode to bytes
     pdf_output = pdf.output(dest="S").encode("latin-1")
 
     st.download_button(
