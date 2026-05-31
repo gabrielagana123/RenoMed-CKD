@@ -171,6 +171,7 @@ if prediction is not None:
     )
 
     # --- Download Report (PDF) ---
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -181,14 +182,11 @@ if prediction is not None:
     pdf.cell(200, 10, txt=f"Prediction: {'CKD' if prediction == 1 else 'Not CKD'}", ln=True)
     pdf.cell(200, 10, txt=f"Probability: {probability:.2f}", ln=True)
 
-    # fpdf2 returns a string, so encode to bytes
-    pdf_output = pdf.output(dest="S").encode("latin-1")
-    if isinstance(pdf_str, str):
-        pdf_output = pdf_str.encode("latin-1")
-    else:
-        pdf_output = pdf_str  # already bytes
+    pdf_str = pdf.output(dest="S")  # fpdf returns a string
+    pdf_output = pdf_str.encode("latin-1")  # convert to bytes
+
     st.download_button(
-        label="Download Report (PDF)",
+        label=" Download Report (PDF)",
         data=pdf_output,
         file_name="RenoMed_CKD_Report.pdf",
         mime="application/pdf"
